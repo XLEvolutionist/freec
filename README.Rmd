@@ -1,0 +1,47 @@
+---
+title: "Using FREEC to analyse CNVs in wild maize"
+author: "Simon Renny-Byfield"
+date: "February 3, 2015"
+output: html_document
+---
+
+As part of my project we are interested in calling PAV-CNV in 20 teosinte individuals from a single population near Palmar Chico, Mexico. I have tried a number of options, none of which are producing what seems like sensible results and so I have decided to pursue different approaches.
+
+[FREEC]("http://bioinformatics.oxfordjournals.org/content/27/2/268.long") infers "control-free copy number alteration (CNA)" detection using deep-sequencing data. The installation is standard and won't be detailed here but there are quite a few auxiliary files that are needed and I will go through how these are generated.
+
+##The config file##
+
+FREEC requires the generation of a config file. An example of such a file is given below:
+
+```
+[general]
+
+chrLenFile = hs18_chr.len
+coefficientOfVariation = 0.062
+ploidy = 3
+
+#breakPointThreshold = -.002;
+#window = 50000
+#chrFiles = hg18/hg18_per_chromosome
+#outputDir = test
+#degree=3
+#intercept = 0
+
+[sample]
+
+mateFile = HCC1143.arachne
+inputFormat = arachne
+mateOrientation = 0
+
+#mateCopyNumberFile = HCC1143.arachne_sample.cpn
+
+[control]
+
+mateFile = HCC1143_BL.arachne
+inputFormat = arachne
+mateOrientation = 0
+
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn
+```
+
+also see [here]("http://bioinfo-out.curie.fr/projects/freec/tutorial.html#CONFIG") for detailed descriptions of what files are needed. From this point on I am using this webpage as guidance for generating the required files.
