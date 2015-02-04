@@ -1,6 +1,6 @@
 #!/bin/bash
 #OUTDIR=/group/jrigrp4/freec/config
-#SBATCH -D /group/jrigrp4/freec/output
+#SBATCH -D /group/jrigrp4/freec/config
 #SBATCH -o /group/jrigrp4/freec/logs/freec_out_log-%j.txt
 #SBATCH -e /group/jrigrp4/freec/logs/freec_err_log-%j.txt
 #SBATCH -J freec
