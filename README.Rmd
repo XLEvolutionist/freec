@@ -127,12 +127,100 @@ mateOrientation = FR
 
 [control]
 
-mateFile = HCC1143_BL.arachne
-inputFormat = BAM
-mateOrientation = FR
+#mateFile = HCC1143_BL.arachne
+#inputFormat = BAM
+#mateOrientation = FR
 
 #mateCopyNumberFile = HCC1143_BL.arachne_control.cpn
 ```
+
+The above template is the nused to generate a config script, one for each of the bam files you wish to analyze. This acieved with a very simple perl script detialed below:
+```
+#!usr/bin/perl
+use strict;
+use warnings;
+
+# usage script.pl /path/to/the/bam/files
+###
+# Read in the .bam files
+###
+opendir my $dir, "$ARGV[0]" or die "Cannot open directory: $!";
+my @files = readdir $dir;
+closedir $dir;
+
+@files = grep ( /.bam$/ , @files);
+
+###
+# now create a freec config script for each bam file.
+###
+foreach ( @files ) {
+  my $dir ="/group/jrigrp4/freec/output/".$_;
+	mkdir $dir;
+	open(OUT , ">/group/jrigrp4/freec/config/config_$_.conf" ) || die;
+	print OUT "[general]
+	
+chrLenFile = /group/jrigrp4/freec/chrLenFile.txt
+coefficientOfVariation = 0.062
+ploidy = 2
+chrFiles=/group/jrigrp4/freec/maize3/
+maxThreads=10
+sex=XX
+outputDir=/group/jrigrp4/freec/output/$_
+#breakPointThreshold = -.002;
+window = 1000
+#degree=3
+#intercept = 0
+
+[sample]
+
+mateFile = /group/jrigrp4/cn.mops/data/$_
+inputFormat = BAM
+mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143.arachne_sample.cpn
+
+[control]
+
+#mateFile = HCC1143_BL.arachne
+#inputFormat = BAM
+#mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn";
+	close OUT;
+
+} #foreach
+
+exit;
+```
+
+This worked just fine, and I now have a bunch of config scripts that I can submit as a slurm array job, with a typical slurm script such as:
+
+```
+#!/bin/bash
+#OUTDIR=/group/jrigrp4/freec/config
+#SBATCH -D /group/jrigrp4/freec/config
+#SBATCH -o /group/jrigrp4/freec/logs/freec_out_log-%j.txt
+#SBATCH -e /group/jrigrp4/freec/logs/freec_err_log-%j.txt
+#SBATCH -J freec
+#SBATCH --mem=12000
+#SBATCH --cpus-per-task 10
+#SBATCH --array=0-20
+
+files=(*.conf)
+
+#cmd="samtools index ${files[$SLURM_ARRAY_TASK_ID]}"
+
+echo "Starting freec job: "
+date
+
+cmd="freec -conf ${files[$SLURM_ARRAY_TASK_ID]}"
+echo $cmd
+eval $cmd
+
+echo "Job Ending: "
+date
+```
+where each config file ends in `.conf` and is stored in `/group/jrigrp4/freec/config`. This job is currently running on farm.
 
 
 
