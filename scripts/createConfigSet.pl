@@ -46,7 +46,7 @@ mateFile = HCC1143_BL.arachne
 inputFormat = BAM
 mateOrientation = FR
 
-#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn"
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn";
 	close OUT;
 
 } #foreach
