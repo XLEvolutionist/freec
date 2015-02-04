@@ -1,0 +1,6 @@
+Starting freec job: 
+Tue Feb  3 16:50:02 PST 2015
+freec -conf config.txt
+Control-FREEC v7.2 : calling copy number alterations and LOH regions using deep-sequencing data
+Job Ending: 
+Tue Feb  3 16:50:02 PST 2015
