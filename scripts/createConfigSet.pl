@@ -36,7 +36,7 @@ outputDir=/group/jrigrp4/freec/output/$_
 
 [sample]
 
-mateFile = /group/jrigrp4/cn.mops/data/$_
+mateFile = $ARGV[0]/$_
 inputFormat = BAM
 mateOrientation = FR
 

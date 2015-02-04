@@ -8,7 +8,7 @@
 #SBATCH --cpus-per-task 10
 #SBATCH --array=0-20
 
-files=(*.conf)
+files=(*filt*.conf)
 
 #cmd="samtools index ${files[$SLURM_ARRAY_TASK_ID]}"
 
