@@ -18,7 +18,7 @@ closedir $dir;
 foreach ( @files ) {
 	my $dir ="/group/jrigrp4/freec/output/".$_;
 	mkdir $dir;
-	open(OUT , ">/group/jrigrp4/freec/config/config_$_.txt" ) || die;
+	open(OUT , ">/group/jrigrp4/freec/config/config_$_.conf" ) || die;
 	print OUT "[general]
 	
 chrLenFile = /group/jrigrp4/freec/chrLenFile.txt
