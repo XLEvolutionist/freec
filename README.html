@@ -111,7 +111,43 @@ mateOrientation = 0
 8   8   175377492
 9   9   157038028
 10  10  149632204</code></pre>
-<p>This is for the maize <code>AGPv3.22</code>.</p>
+<p>This is for maize <code>AGPv3.22</code>.</p>
+<p>So the next step is to generate single sequences for each chromosome using a very specific genome references sequence. In this case it is version 3.22, a version of this can be found in <code>/home/vince251/data/refgen3-hapmap/maize3.fa.gz</code> which is the exact sequence that the <code>.bam</code> files were mapped to. So now to split the sequence up…</p>
+<p>The sequences have been split using the following BioPerl heavy script:</p>
+<pre><code>#!usr/bin/perl
+use strict;
+use warnings;
+use Bio::SeqIO;
+
+###############################
+#Simon Renny-Byfield, UC Davis, 7th November 2014, version 1
+###############################
+
+#usage script.pl &lt;fasta&gt; 
+
+#This script takes fasta files and splits the sequences into individual files
+
+#Initialize the Bio:SeqIO object; 
+my $seqIO = Bio::SeqIO -&gt; new ( -format =&gt; &quot;fasta&quot; , -file =&gt; $ARGV[0] );
+
+#also intilize a file to contain all the nam
+#start looping through the sequences
+while ( my $seqObj = $seqIO-&gt;next_seq() ) {
+  #get the sequence id
+    my $name = $seqObj-&gt;id;
+    #open up a new file with the seq id as name
+    open(NEWFASTA, &quot;&gt;$name&quot;.&quot;.fasta&quot; ) || die &quot;could not open file:$!\n&quot;;
+    #print the name of the sequence
+    print NEWFASTA &quot;&gt;$name\n&quot;;
+    #grab the sequence string
+    my $seqstr = $seqObj-&gt;seq();
+    #print it
+    print NEWFASTA &quot;$seqstr\n&quot;;
+    #close the file handle
+    close(NEWFASTA) 
+}#while
+
+exit;</code></pre>
 </div>
 
 
