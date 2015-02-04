@@ -27,9 +27,10 @@ ploidy = 2
 chrFiles=/group/jrigrp4/freec/maize3/
 maxThreads=10
 sex=XX
+BedGraphOutput=TRUE
 outputDir=/group/jrigrp4/freec/output/$_
 #breakPointThreshold = -.002;
-window = 1000
+#window = 100
 #degree=3
 #intercept = 0
 
