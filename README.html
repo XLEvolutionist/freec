@@ -156,7 +156,7 @@ chrLenFile = /group/jrigrp4/freec/chrLenFile.txt
 coefficientOfVariation = 0.062
 ploidy = 2
 chrFiles=/group/jrigrp4/freec/maize3/
-maxThreads1=10
+maxThreads=10
 sex=XX
 
 #breakPointThreshold = -.002;
@@ -174,11 +174,92 @@ mateOrientation = FR
 
 [control]
 
-mateFile = HCC1143_BL.arachne
+#mateFile = HCC1143_BL.arachne
+#inputFormat = BAM
+#mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn</code></pre>
+<p>The above template is the nused to generate a config script, one for each of the bam files you wish to analyze. This acieved with a very simple perl script detialed below:</p>
+<pre><code>#!usr/bin/perl
+use strict;
+use warnings;
+
+# usage script.pl /path/to/the/bam/files
+###
+# Read in the .bam files
+###
+opendir my $dir, &quot;$ARGV[0]&quot; or die &quot;Cannot open directory: $!&quot;;
+my @files = readdir $dir;
+closedir $dir;
+
+@files = grep ( /.bam$/ , @files);
+
+###
+# now create a freec config script for each bam file.
+###
+foreach ( @files ) {
+  my $dir =&quot;/group/jrigrp4/freec/output/&quot;.$_;
+    mkdir $dir;
+    open(OUT , &quot;&gt;/group/jrigrp4/freec/config/config_$_.conf&quot; ) || die;
+    print OUT &quot;[general]
+    
+chrLenFile = /group/jrigrp4/freec/chrLenFile.txt
+coefficientOfVariation = 0.062
+ploidy = 2
+chrFiles=/group/jrigrp4/freec/maize3/
+maxThreads=10
+sex=XX
+outputDir=/group/jrigrp4/freec/output/$_
+#breakPointThreshold = -.002;
+window = 1000
+#degree=3
+#intercept = 0
+
+[sample]
+
+mateFile = /group/jrigrp4/cn.mops/data/$_
 inputFormat = BAM
 mateOrientation = FR
 
-#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn</code></pre>
+#mateCopyNumberFile = HCC1143.arachne_sample.cpn
+
+[control]
+
+#mateFile = HCC1143_BL.arachne
+#inputFormat = BAM
+#mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn&quot;;
+    close OUT;
+
+} #foreach
+
+exit;</code></pre>
+<p>This worked just fine, and I now have a bunch of config scripts that I can submit as a slurm array job, with a typical slurm script such as:</p>
+<pre><code>#!/bin/bash
+#OUTDIR=/group/jrigrp4/freec/config
+#SBATCH -D /group/jrigrp4/freec/config
+#SBATCH -o /group/jrigrp4/freec/logs/freec_out_log-%j.txt
+#SBATCH -e /group/jrigrp4/freec/logs/freec_err_log-%j.txt
+#SBATCH -J freec
+#SBATCH --mem=12000
+#SBATCH --cpus-per-task 10
+#SBATCH --array=0-20
+
+files=(*.conf)
+
+#cmd=&quot;samtools index ${files[$SLURM_ARRAY_TASK_ID]}&quot;
+
+echo &quot;Starting freec job: &quot;
+date
+
+cmd=&quot;freec -conf ${files[$SLURM_ARRAY_TASK_ID]}&quot;
+echo $cmd
+eval $cmd
+
+echo &quot;Job Ending: &quot;
+date</code></pre>
+<p>where each config file ends in <code>.conf</code> and is stored in <code>/group/jrigrp4/freec/config</code>. This job is currently running on farm.</p>
 </div>
 
 
