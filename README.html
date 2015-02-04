@@ -130,7 +130,7 @@ use Bio::SeqIO;
 #Initialize the Bio:SeqIO object; 
 my $seqIO = Bio::SeqIO -&gt; new ( -format =&gt; &quot;fasta&quot; , -file =&gt; $ARGV[0] );
 
-#also intilize a file to contain all the nam
+#also intilize a file to contain all the name
 #start looping through the sequences
 while ( my $seqObj = $seqIO-&gt;next_seq() ) {
   #get the sequence id
@@ -148,6 +148,37 @@ while ( my $seqObj = $seqIO-&gt;next_seq() ) {
 }#while
 
 exit;</code></pre>
+<p>I will set <code>maxThreads1=10</code> in the config file.</p>
+<p>The final <code>config</code> file looks like this:</p>
+<pre><code>[general]
+
+chrLenFile = /group/jrigrp4/freec/chrLenFile.txt
+coefficientOfVariation = 0.062
+ploidy = 2
+chrFiles=/group/jrigrp4/freec/maize3/
+maxThreads1=10
+sex=XX
+
+#breakPointThreshold = -.002;
+window = 1000
+#degree=3
+#intercept = 0
+
+[sample]
+
+mateFile = /group/jrigrp4/cn.mops/TIL_data/TIL01_sorted.bam
+inputFormat = BAM
+mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143.arachne_sample.cpn
+
+[control]
+
+mateFile = HCC1143_BL.arachne
+inputFormat = BAM
+mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn</code></pre>
 </div>
 
 

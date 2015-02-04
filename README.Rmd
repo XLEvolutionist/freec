@@ -79,7 +79,7 @@ use Bio::SeqIO;
 #Initialize the Bio:SeqIO object; 
 my $seqIO = Bio::SeqIO -> new ( -format => "fasta" , -file => $ARGV[0] );
 
-#also intilize a file to contain all the nam
+#also intilize a file to contain all the name
 #start looping through the sequences
 while ( my $seqObj = $seqIO->next_seq() ) {
   #get the sequence id
@@ -97,6 +97,41 @@ while ( my $seqObj = $seqIO->next_seq() ) {
 }#while
 
 exit;
+```
+
+I will set `maxThreads1=10` in the config file.
+
+The final `config` file looks like this:
+```
+[general]
+
+chrLenFile = /group/jrigrp4/freec/chrLenFile.txt
+coefficientOfVariation = 0.062
+ploidy = 2
+chrFiles=/group/jrigrp4/freec/maize3/
+maxThreads=10
+sex=XX
+
+#breakPointThreshold = -.002;
+window = 1000
+#degree=3
+#intercept = 0
+
+[sample]
+
+mateFile = /group/jrigrp4/cn.mops/TIL_data/TIL01_sorted.bam
+inputFormat = BAM
+mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143.arachne_sample.cpn
+
+[control]
+
+mateFile = HCC1143_BL.arachne
+inputFormat = BAM
+mateOrientation = FR
+
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn
 ```
 
 
