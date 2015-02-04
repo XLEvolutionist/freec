@@ -1,3 +1,37 @@
 Starting freec job: 
 Tue Feb  3 16:52:22 PST 2015
 freec -conf ../config.txt
+Control-FREEC v7.2 : calling copy number alterations and LOH regions using deep-sequencing data
+MT-mode using 10 threads
+..Minimal CNA length (in windows) is 1
+..consider the sample being female
+..Breakpoint threshold for segmentation of copy number profiles is 0.8
+..Polynomial degree for "ReadCount ~ GC-content" or "Sample ReadCount ~ Control ReadCount" is 3
+..telocenromeric set to 50000
+..FREEC is not going to adjust profiles for a possible contamination by normal cells
+..Note, the Coefficient Of Variation won't be used since "window" = 1000 was set
+..Output directory:	.
+..Directory with files containing chromosome sequences:	/group/jrigrp4/freec/maize3/
+..Sample file:	/group/jrigrp4/cn.mops/TIL_data/TIL01_sorted.bam
+..Sample input format:	BAM
+..will use this instance of samtools: 'samtools' to read BAM files
+..Control file:	HCC1143_BL.arachne
+..Input format for the control file:	BAM
+..File with chromosome lengths:	/group/jrigrp4/freec/chrLenFile.txt
+..uniqueMatch = FALSE
+..average ploidy set to 2
+..break-point type set to 2
+..noisyData set to 0
+..minimal number of reads per window in the control sample is set to 10
+..File /group/jrigrp4/freec/chrLenFile.txt was read
+..Starting reading /group/jrigrp4/cn.mops/TIL_data/TIL01_sorted.bam
+..samtools should be installed to be able to read BAM files; will use the following command for samtools: samtools view /group/jrigrp4/cn.mops/TIL_data/TIL01_sorted.bam
+PROFILING [tid=47131825784576]: /group/jrigrp4/cn.mops/TIL_data/TIL01_sorted.bam read in 1371 seconds [fillMyHash]
+424594181 lines read..
+352168505 reads used to compute copy number profile
+printing counts into ./TIL01_sorted.bam_sample.cpn
+..Window size:	1000
+..File /group/jrigrp4/freec/chrLenFile.txt was read
+..Starting reading HCC1143_BL.arachne
+Job Ending: 
+Tue Feb  3 17:15:15 PST 2015
