@@ -16,7 +16,8 @@ closedir $dir;
 # now create a freec config script for each bam file.
 ###
 foreach ( @files ) {
-	mkdir /group/jrigrp4/freec/output/$_;
+	my $dir ="/group/jrigrp4/freec/output/".$_;
+	mkdir $dir;
 	open(OUT , ">/group/jrigrp4/freec/config/config_$_.txt" ) || die;
 	print OUT "[general]
 	
@@ -46,7 +47,7 @@ mateFile = HCC1143_BL.arachne
 inputFormat = BAM
 mateOrientation = FR
 
-#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn"
+#mateCopyNumberFile = HCC1143_BL.arachne_control.cpn";
 	close OUT;
 
 } #foreach
