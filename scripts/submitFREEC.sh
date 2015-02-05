@@ -8,9 +8,9 @@
 #SBATCH --cpus-per-task 10
 #SBATCH --array=0-20
 
-files=(*filt*.conf)
+files=(config_J*.conf)
 
-#cmd="samtools index ${files[$SLURM_ARRAY_TASK_ID]}"
+echo "preserve run..."
 
 echo "Starting freec job: "
 date

@@ -30,7 +30,7 @@ sex=XX
 BedGraphOutput=TRUE
 outputDir=/group/jrigrp4/freec/output/$_
 #breakPointThreshold = -.002;
-#window = 100
+window = 10000
 #degree=3
 #intercept = 0
 
