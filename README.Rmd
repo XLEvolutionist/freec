@@ -7,6 +7,8 @@ output: html_document
 
 As part of my project we are interested in calling PAV-CNV in 20 teosinte individuals from a single population near Palmar Chico, Mexico. I have tried a number of options, none of which are producing what seems like sensible results and so I have decided to pursue different approaches.
 
+**** Using the .bam files stored in /group/jrigrp4/cn/mops/data ****
+
 [FREEC]("http://bioinformatics.oxfordjournals.org/content/27/2/268.long") infers "control-free copy number alteration (CNA)" detection using deep-sequencing data. The installation is standard and won't be detailed here but there are quite a few auxiliary files that are needed and I will go through how these are generated.
 
 ##The config file##
@@ -167,7 +169,7 @@ maxThreads=10
 sex=XX
 outputDir=/group/jrigrp4/freec/output/$_
 #breakPointThreshold = -.002;
-window = 1000
+#window = 1000
 #degree=3
 #intercept = 0
 
@@ -222,6 +224,26 @@ date
 ```
 where each config file ends in `.conf` and is stored in `/group/jrigrp4/freec/config`. This job is currently running on farm.
 
+The job has completed but I notice that some of the predicted CNVs are well over 1 Mbp in size. This seems unlikely to me. Here I plot the mean (normalized) coverage per window against the predicted copy number from FREEC.
+```{r, echo=FALSE,exec=TRUE}
+library(data.table)
+#load in teh ratio data
+ratioData<-fread("/Users/simonrenny-byfield/GitHubRepos/freec/output/JRIAL2A.sorted.bam/JRIAL2A.sorted.bam_ratio.txt", header=TRUE)
+#load in the CNV calls directly
+CNVS<-fread("/Users/simonrenny-byfield/GitHubRepos/freec/output/JRIAL2A.sorted.bam/JRIAL2A.sorted.bam_CNVs", header=FALSE)
+# subset to ten
+CNVS<-subset(CNVS,V1==10)
+#get chr 10
+chr10<-subset(ratioData, subset = Chromosome==10)
+dim(chr10)
+par(mfrow=c(1,1))
+#now try to plot this:
+plot(chr10$Start,2*chr10$Ratio, ylim = c(0,6), cex = 0.03, col = "cornflowerblue", xlab="Chr10 position (bp)", ylab="normalized copy number")
+points(chr10$Start,chr10$CopyNumber, cex = 0.3, pch =15)
+segments(x0=CNVS$V2,x1=CNVS$V3,y0=CNVS$V4,y1=CNVS$V4, lwd=4, col = "black")
+segments(x0=CNVS$V2,x1=CNVS$V3,y0=CNVS$V4,y1=CNVS$V4, lwd=4, col = "red")
+
+```
 
 
 
