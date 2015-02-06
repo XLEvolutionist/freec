@@ -6,9 +6,9 @@
 #SBATCH -J freec
 #SBATCH --mem=12000
 #SBATCH --cpus-per-task 10
-#SBATCH --array=0-20
+#SBATCH --array=0-21
 
-files=(config_J*.conf)
+files=(*.conf)
 
 echo "preserve run..."
 
